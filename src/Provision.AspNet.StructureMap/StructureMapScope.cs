@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Web.Http.Dependencies;
 using Microsoft.Practices.ServiceLocation;
 using StructureMap;
@@ -9,17 +11,12 @@ namespace Provision.AspNet.StructureMap
 {
 	public class StructureMapScope : IDependencyScope, IServiceLocator
 	{
-		private Boolean _disposed;
 		private readonly IContainer _container;
+		private Boolean _disposed;
 
 		public StructureMapScope(IContainer container)
 		{
 			_container = container;
-		}
-
-		protected StructureMapScope GetChildScope()
-		{
-			return new StructureMapScope(_container.CreateChildContainer());
 		}
 
 		public IDependencyResolver GetResolver()
@@ -29,49 +26,63 @@ namespace Provision.AspNet.StructureMap
 
 		public Object GetService(Type serviceType)
 		{
-			return _container.TryGetInstance(serviceType);
+			return GetServiceInternal(serviceType);
 		}
 
 		public IEnumerable<Object> GetServices(Type serviceType)
 		{
+			Debug.WriteLine($"Requested all instances of: {serviceType}");
 			return _container.GetAllInstances(serviceType).Cast<Object>();
 		}
 
 		public Object GetInstance(Type serviceType)
 		{
-			return GetService(serviceType);
+			return GetServiceInternal(serviceType);
 		}
 
 		public Object GetInstance(Type serviceType, String key)
 		{
-			return _container.TryGetInstance(serviceType, key);
+			return GetServiceInternal(serviceType, key);
 		}
 
 		public TService GetInstance<TService>()
 		{
-			return _container.TryGetInstance<TService>();
+			return (TService)GetServiceInternal(typeof(TService));
 		}
 
 		public TService GetInstance<TService>(String key)
 		{
-			return _container.TryGetInstance<TService>(key);
+			return (TService)GetServiceInternal(typeof(TService), key);
 		}
 
 		public IEnumerable<Object> GetAllInstances(Type serviceType)
 		{
+			Debug.WriteLine($"Requested all instances of: {serviceType}");
 			return GetServices(serviceType);
 		}
 
 		public IEnumerable<TService> GetAllInstances<TService>()
 		{
+			Debug.WriteLine($"Requested all instances of: {typeof(TService)}");
 			return _container.GetAllInstances<TService>();
+		}
+
+		public void Dispose()
+		{
+			Dispose(true);
+		}
+
+		protected StructureMapScope GetChildScope()
+		{
+			Debug.WriteLine($"Child scope created;");
+			return new StructureMapScope(_container.CreateChildContainer());
 		}
 
 		protected virtual void Dispose(bool disposing)
 		{
 			if (!_disposed) {
 				if (disposing) {
-					// Dispose managed state
+					// Dispose managed resources
 					_container.Dispose();
 				}
 
@@ -82,10 +93,17 @@ namespace Provision.AspNet.StructureMap
 			}
 		}
 
-		public void Dispose()
+		private Object GetServiceInternal(Type serviceType, String key = null)
 		{
-			// Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-			Dispose(true);
+			if (String.IsNullOrWhiteSpace(key)) {
+				var a = _container.TryGetInstance(serviceType);
+				Debug.WriteLine($"Requested: {serviceType}  Provided: {a}");
+				return a;
+			}
+
+			var b = _container.TryGetInstance(serviceType, key);
+			Debug.WriteLine($"Requested: {serviceType}  With Key: {key}  Provided: {b}");
+			return b;
 		}
 	}
 }
