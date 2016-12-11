@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <licenseUrl>https://github.com/provisiondata/Provision.AspNet.StructureMap/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/provisiondata/Provision.AspNet.StructureMap</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/provisiondata/Provision.AspNet.StructureMap/master/src/Provision.AspNet.StructureMap/favicon.ico</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <releaseNotes>Initial commit</releaseNotes>
+    <copyright>Copyright 2016 Provision Data Systems Inc.</copyright>
+  </metadata>
+</package>

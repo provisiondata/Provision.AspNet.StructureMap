@@ -2,7 +2,7 @@
 using System.Web.Mvc;
 using StructureMap;
 
-namespace DKW.AspNet.StructureMap
+namespace Provision.AspNet.StructureMap
 {
 	public class IoC
 	{
