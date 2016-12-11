@@ -4,14 +4,14 @@ using StructureMap;
 
 namespace Provision.AspNet.StructureMap
 {
-	public class IoC
+	public static class IoC
 	{
 		/// <summary>
 		/// Configures ASP.NET MVC and ASP.NET WebAPI to use StructureMap as the Dependency Resolver.
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <param name="config"></param>
-		public static void Bootstrap<T>(HttpConfiguration config)
+		public static void Bootstrap<T>(this HttpConfiguration config)
 				where T : Registry, new()
 		{
 			Configure(config, new T());
@@ -22,7 +22,7 @@ namespace Provision.AspNet.StructureMap
 		/// </summary>
 		/// <param name="config"></param>
 		/// <param name="registry"></param>
-		public static void Configure(HttpConfiguration config, Registry registry)
+		public static void Configure(this HttpConfiguration config, Registry registry)
 		{
 			var container = new Container(registry);
 			var scope = new StructureMapScope(container);
