@@ -8,7 +8,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("Provision.AspNet.StructureMap")]
 [assembly: AssemblyCopyright("Copyright © 2016 Provision Data Systems Inc.")]
 [assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("EN-us")]
 [assembly: ComVisible(false)]
 [assembly: Guid("ff8e04d9-346b-499e-b365-c057481cd94e")]
 [assembly: AssemblyVersion("1.1.0.0")]
